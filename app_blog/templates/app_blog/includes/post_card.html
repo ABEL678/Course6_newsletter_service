@@ -1,0 +1,16 @@
+<div class="col-lg-3 col-sm-6 mb-3">
+    <div class="item-card">
+        <div class="item-thumb">
+            <img src="{{ object.preview.url }}">
+        </div>
+        <div class="item-details">
+            <h4><a href="{% url 'app_blog:post_detail' slug=object.slug %}">{{ object.title }}</a></h4>
+            <p>{{ object.content|truncatechars:100 }}</p>
+            <div class="item-bottom-details d-flex justify-content-between">
+                <div>
+                    {{ object.created_at }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

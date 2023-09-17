@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Удалить письмо "{{ object }}"
+{% endblock %}
+
+{% block header %}
+    Удалить письмо "{{ object }}"
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <p>Уверены, что хотите удалить письмо "{{ object }}"?</p>
+        <input type="submit" class="btn btn-outline-danger" value="Уверен">
+    </form>
+{% endblock %}

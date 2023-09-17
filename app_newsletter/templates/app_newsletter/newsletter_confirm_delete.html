@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Отключить | {{ object }}
+{% endblock %}
+
+{% block header %}
+    Отключение: {{ object }}
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <p>Уверены, что хотите отключить "{{ object }}"?</p>
+        <input type="submit" class="btn btn-outline-danger" value="Уверен">
+    </form>
+{% endblock %}

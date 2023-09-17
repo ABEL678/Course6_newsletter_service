@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block header %}
+    SkyChimp
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h4 class="card-title">Всего рассылок</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ total_newsletters }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h4 class="card-title">Активных рассылок</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ active_newsletters }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h4 class="card-title">Уникальных клиентов</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ unique_clients }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for post in random_blog_posts %}
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="item-card">
+                        <div class="item-thumb">
+                            <img src="{{ post.preview.url }}">
+                        </div>
+                        <div class="item-details">
+                            <h4><a href="{% url 'app_blog:post_detail' slug=post.slug %}">{{ post.title }}</a></h4>
+                            <p>{{ post.content|truncatechars:100 }}</p>
+                            <div class="item-bottom-details d-flex justify-content-between">
+                                <div>
+                                    {{ post.created_at }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

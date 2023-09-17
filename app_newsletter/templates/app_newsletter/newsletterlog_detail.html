@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ object }}
+{% endblock %}
+
+{% block header %}
+    {{ object }}
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-12">
+        <table class="table">
+            <tr>
+                <th>Время:</th>
+                <td>{{ object.date_time|date:"D d M Y" }} {{ object.date_time|time:"H:i:s" }}</td>
+            </tr>
+            <tr>
+                <th>Статус:</th>
+                <td>{{ object.get_status_display }}</td>
+            </tr>
+            <tr>
+                <th>Ответ сервера:</th>
+                <td>{{ object.server_response }}</td>
+            </tr>
+            <tr>
+                <th>Клиент:</th>
+                <td>{{ object.client.email }} ({{ object.client.first_name }} {{ object.client.last_name }})</td>
+            </tr>
+            <tr>
+                <th>Заголовок письма:</th>
+                <td>{{ object.message.subject }}</td>
+            </tr>
+            <tr>
+                <th>Тело письма:</th>
+                <td>{{ object.message.body }}</td>
+            </tr>
+            <tr>
+                <th>Рассылка:</th>
+                <td>
+                    {% if object.newsletter %}
+                        <a href="{% url 'app_newsletter:newsletter_detail' pk=object.newsletter.pk %}">
+                            {{ object.newsletter }}
+                        </a>
+                    {% else %}
+                        Рассылка удалена
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

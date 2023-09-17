@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Публикации
+{% endblock %}
+
+{% block header %}
+    Публикации
+{% endblock %}
+
+{% block content %}
+    {% if object_list %}
+        <div class="row">
+            {% for object in object_list %}
+                {% include 'app_blog/includes/post_card.html' %}
+            {% endfor %}
+        </div>
+        {% include 'includes/paginator.html' %}
+    {% else %}
+        <h3>Пока здесь пусто</h3>
+    {% endif %}
+{% endblock %}

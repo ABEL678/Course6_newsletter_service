@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ action }} рассылку
+{% endblock %}
+
+{% block header %}
+    {{ action }} рассылку
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <input type="submit" class="btn btn-success" value="{{ action }}">
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectElements = document.querySelectorAll('.multiselect');
+
+            selectElements.forEach(function (selectElement) {
+                var allOption = document.createElement('option');
+                allOption.text = 'Выбрать все';
+                allOption.value = 'all';
+
+                selectElement.insertBefore(allOption, selectElement.firstChild);
+
+                selectElement.addEventListener('change', function (e) {
+                    if (e.target.value === 'all') {
+                        for (var i = 1; i < selectElement.options.length; i++) {
+                            selectElement.options[i].selected = true;
+                        }
+                        selectElement.options[0].selected = false;
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

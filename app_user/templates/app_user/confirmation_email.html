@@ -1,0 +1,8 @@
+{% autoescape off %}
+    Здравствуйте, {{ user.first_name }} {{ user.last_name }}!
+
+    Для завершения регистрации на нашем сайте, пожалуйста, перейдите по следующей ссылке:
+    http://{{ domain }}{% url 'app_user:confirm_email' uidb64=uid token=token %}
+
+    Если вы не регистрировались на нашем сайте, проигнорируйте это сообщение.
+{% endautoescape %}

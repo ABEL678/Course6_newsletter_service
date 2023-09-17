@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Авторизация
+{% endblock %}
+
+{% block header %}
+    Авторизация
+{% endblock %}
+
+{% block content %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="d-flex justify-content-between align-items-center">
+            <input type="submit" class="btn btn-success" value="Войти">
+            <a href="{% url 'app_user:password_reset' %}" class="btn btn-warning">Забыл пароль</a>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Журнал рассылок
+{% endblock %}
+
+{% block header %}
+    Журнал рассылок
+{% endblock %}
+
+{% block content %}
+    {% if object_list %}
+        <table class="table table-striped table-hover caption-top">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Рассылка</th>
+                <th scope="col">Создатель рассылки</th>
+                <th scope="col">Дата лога</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Ответ сервера</th>
+                <th scope="col">Получатель</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'app_newsletter:newsletter_log_detail' pk=object.pk %}">
+                            Лог #{{ object.pk }}
+                        </a>
+                    </td>
+                    <td>{{ object.newsletter }}</td>
+                    <td>{{ object.newsletter.created_by }}</td>
+                    <td>
+                        <a href="{% url 'app_newsletter:newsletter_log_detail' pk=object.pk %}">
+                            {{ object.date_time|date:"D d M Y" }} {{ object.date_time|time:"H:i:s" }}
+                        </a>
+                    </td>
+                    <td>{{ object.get_status_display }}</td>
+                    <td>{{ object.server_response }}</td>
+                    <td>{{ object.client.email }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'includes/paginator.html' %}
+    {% else %}
+        <h3>Пока здесь пусто</h3>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ action }} пост
+{% endblock %}
+
+{% block header %}
+    {{ action }} пост
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <input type="submit" class="btn btn-success" value="{{ action }}">
+    </form>
+{% endblock %}
