@@ -5,19 +5,9 @@ from .models import CustomUser
 
 
 class BaseUserForm(forms.ModelForm):
-    """
-    Базовая форма для создания и редактирования пользователя,
-    содержащая методы валидации.
-    """
 
     def clean(self):
-        """
-        Проверка дополнительных условий при валидации формы.
-        Переопределяет метод clean() и добавляет проверки
-        для полей first_name и last_name.
-        Если имя/фамилия отсутствуют или состоят только из пробелов,
-        будет показана ошибка под соответствующим полем.
-        """
+
         cleaned_data = super().clean()
         first_name = cleaned_data.get("first_name")
         last_name = cleaned_data.get("last_name")
@@ -30,21 +20,13 @@ class BaseUserForm(forms.ModelForm):
 
 
 class UserRegistrationForm(UserCreationForm, BaseUserForm):
-    """
-    Форма для регистрации пользователя.
-    Наследуется от BasUserForm и UserCreationForm Django.
-    Предоставляет поля для ввода логина, электронной почты, имени,
-    фамилии, отчества, пароля, повтора пароля.
-    """
 
     class Meta:
         model = CustomUser
         fields = ['email', 'first_name', 'last_name', 'middle_name']
 
     def __init__(self, *args, **kwargs):
-        """
-        Инициализирует форму и добавляет CSS-классы и плейсхолдеры для полей формы.
-        """
+
         super().__init__(*args, **kwargs)
         self.fields['email'].widget = forms.EmailInput(
             attrs={'class': 'form-control', 'placeholder': 'Введите ваш email'})
@@ -62,17 +44,11 @@ class UserRegistrationForm(UserCreationForm, BaseUserForm):
 
 
 class UserLoginForm(AuthenticationForm):
-    """
-    Форма для входа пользователя в систему.
-    Наследуется от AuthenticationForm Django.
-    Предоставляет поля для ввода электронной почты и пароля.
-    """
+
     username = forms.EmailField(widget=forms.EmailInput(attrs={'autofocus': True}))
 
     def __init__(self, *args, **kwargs):
-        """
-        Инициализирует форму и добавляет CSS-классы и плейсхолдеры для полей формы.
-        """
+
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({
             'class': 'form-control',
@@ -85,20 +61,13 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserUpdateForm(BaseUserForm, forms.ModelForm):
-    """
-    Форма для редактирования пользователя.
-    Наследуется от BaseUserForm ModelForm Django.
-    Предоставляет поля для ввода имени, фамилии, отчества.
-    """
 
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'middle_name']
 
     def __init__(self, *args, **kwargs):
-        """
-        Инициализирует форму и добавляет CSS-классы и плейсхолдеры для полей формы.
-        """
+
         super().__init__(*args, **kwargs)
         self.fields['first_name'].widget = forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Введите ваше имя'})
@@ -109,34 +78,18 @@ class UserUpdateForm(BaseUserForm, forms.ModelForm):
 
 
 class CustomPasswordResetForm(PasswordResetForm):
-    """
-    Форма для сброса пароля.
-    Наследуется от Django PasswordResetForm.
-    Предоставляет поле для ввода электронной почты, на которую
-    будет отправлена ссылка для восстановления пароля.
-    """
 
     def __init__(self, *args, **kwargs):
-        """
-        Инициализирует форму и добавляет CSS-классы и плейсхолдеры для полей формы.
-        """
+
         super().__init__(*args, **kwargs)
         self.fields['email'].widget = forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Введите вашу электронную почту'})
 
 
 class CustomSetPasswordForm(SetPasswordForm):
-    """
-    Форма для установки нового пароля.
-    Наследуется от Django SetPasswordForm.
-    Предоставляет поле для ввода нового пароля и поле
-    для его подтверждения.
-    """
 
     def __init__(self, *args, **kwargs):
-        """
-        Инициализирует форму и добавляет CSS-классы и плейсхолдеры для полей формы.
-        """
+
         super().__init__(*args, **kwargs)
         self.fields['new_password1'].widget = forms.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': 'Введите новый пароль'})

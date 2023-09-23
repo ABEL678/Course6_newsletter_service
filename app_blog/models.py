@@ -4,9 +4,6 @@ from app_user.models import CustomUser
 
 
 class Post(models.Model):
-    """
-    Модель, описывающая пост в блоге
-    """
     title = models.CharField(max_length=255, unique=True, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, blank=True, verbose_name='URL')
     content = models.TextField(verbose_name='Содержание')
@@ -26,15 +23,9 @@ class Post(models.Model):
         return self.title
 
     def increment_view_count(self):
-        """
-        Увеличивает счетчик просмотров поста на 1.
-        """
         self.views_count += 1
         self.save()
 
     def make_unpublished(self):
-        """
-        Помечает пост как неопубликованный.
-        """
         self.published = False
         self.save()

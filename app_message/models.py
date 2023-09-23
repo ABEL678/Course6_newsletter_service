@@ -4,9 +4,7 @@ from app_user.models import CustomUser
 
 
 class Message(models.Model):
-    """
-    Модель, описывающая сообщение
-    """
+
     subject = models.CharField(max_length=255, verbose_name='Тема письма')
     body = models.TextField(verbose_name='Тело письма')
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Создан',

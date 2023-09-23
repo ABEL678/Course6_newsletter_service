@@ -10,25 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 class MainPageDataCachingServices:
-    """
-    Отвечает за кеширование и получение данных,
-    связанных с моделями Newsletter и Client
-    на главной странице.
-
-    Все методы класса работают по следующему алгоритму:
-    - если кеширование включено в settings.py (CACHE_ENABLED = True),
-    метод сначала проверяет, есть ли данные в кеше;
-    - если данные есть в кеше, они возвращаются из кеша;
-    - если данные в кеше не найдены, метод делает запрос к базе данных
-    и затем сохраняет результат в кеше на 120 секунд;
-    - если кеширование отключено, метод просто делает запрос к базе данных.
-    """
 
     @staticmethod
     def get_total_newsletter() -> int:
-        """
-        Возвращает общее количество рассылок.
-        """
+
         if settings.CACHE_ENABLED:
             logger.debug('Пробую получить данные из кеша')
             total_newsletter = cache.get('total_newsletter')
@@ -46,9 +31,7 @@ class MainPageDataCachingServices:
 
     @staticmethod
     def get_active_newsletters() -> int:
-        """
-        Возвращает количество активных рассылок.
-        """
+
         if settings.CACHE_ENABLED:
             active_newsletters = cache.get('active_newsletters')
 
@@ -62,9 +45,7 @@ class MainPageDataCachingServices:
 
     @staticmethod
     def get_unique_clients() -> int:
-        """
-        Возвращает количество уникальных клиентов.
-        """
+
         if settings.CACHE_ENABLED:
             unique_clients = cache.get('unique_clients')
 

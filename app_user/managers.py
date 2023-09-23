@@ -7,9 +7,7 @@ class CustomUserManager(UserManager):
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
-        """
-        Создаёт и сохраняет пользователя с переданными электронной почтой и паролем
-        """
+
         if not email:
             raise ValueError("The given email must be set")
 

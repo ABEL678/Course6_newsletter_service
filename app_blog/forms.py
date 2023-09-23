@@ -4,9 +4,6 @@ from .models import Post
 
 
 class PostCreateForm(forms.ModelForm):
-    """
-    Форма для создания нового поста.
-    """
     class Meta:
         model = Post
         fields = ['title', 'content', 'preview']

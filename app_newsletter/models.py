@@ -8,9 +8,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Newsletter(models.Model):
-    """
-    Модель, описывающая рассылку
-    """
+
     FREQUENCY_CHOICES = [
         ('D', 'Раз в день'),
         ('W', 'Раз в неделю'),
@@ -47,17 +45,13 @@ class Newsletter(models.Model):
         return reverse('app_newsletter:newsletter_detail', args=[str(self.pk)])
 
     def make_inactive(self):
-        """
-        Делает рассылку неактивной.
-        """
+
         self.is_active = False
         self.save()
 
 
 class NewsletterLog(models.Model):
-    """
-    Модель, описывающая лог рассылки
-    """
+
     STATUS_CHOICES = [
         ('S', 'Success'),
         ('F', 'Failure')

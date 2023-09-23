@@ -4,9 +4,6 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Client(models.Model):
-    """
-    Модель, описывающая клиента для рассылки писем
-    """
     email = models.EmailField(verbose_name='Электронная почта')
     first_name = models.CharField(max_length=100, verbose_name='Имя')
     last_name = models.CharField(max_length=100, verbose_name='Фамилия')

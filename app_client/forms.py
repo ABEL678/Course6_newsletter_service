@@ -4,21 +4,11 @@ from .models import Client
 
 
 class ClientCreateForm(forms.ModelForm):
-    """
-    Форма создания нового клиента для рассылки писем.
-    """
-
     class Meta:
         model = Client
         fields = ['email', 'first_name', 'last_name', 'middle_name', 'comment']
 
     def __init__(self, *args, **kwargs) -> None:
-        """
-        Инициализирует форму и добавляет CSS-классы и
-        плейсхолдеры для полей формы.
-        Извлекает из kwargs пользователя и использует его для валидации адреса
-        электронной почты клиента.
-        """
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
@@ -32,10 +22,6 @@ class ClientCreateForm(forms.ModelForm):
         self.fields['comment'].widget.attrs['placeholder'] = 'Комментарии (необязательно)'
 
     def clean_email(self) -> str:
-        """
-        Проверяет, существует ли уже клиент с таким адресом электронной почты,
-        который был создан текущим пользователем. Если да, поднимает ошибку валидации.
-        """
         email = self.cleaned_data.get('email')
 
         if self.user:

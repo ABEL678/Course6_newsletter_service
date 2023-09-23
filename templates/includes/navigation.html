@@ -1,0 +1,103 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'app_main:index' %}">Mailing</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto top-menu">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="blogDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Блог
+                </a>
+                <div class="dropdown-menu" aria-labelledby="blogDropdown">
+                    <a class="dropdown-item" href="{% url 'app_blog:post_list' %}">Статьи</a>
+                    {% if request.user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'app_blog:post_create' %}">Создать статью</a>
+                    {% endif %}
+                </div>
+            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="newsletterDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Клиенты
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="newsletterDropdown">
+                        <a class="dropdown-item" href="{% url 'app_client:client_list' %}">Список моих клиентов</a>
+                        <a class="dropdown-item" href="{% url 'app_client:client_create' %}">Создать клиента</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="newsletterDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Письма
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="newsletterDropdown">
+                        <a class="dropdown-item" href="{% url 'app_message:message_list' %}">Список моих писем</a>
+                        <a class="dropdown-item" href="{% url 'app_message:message_create' %}">Создать письмо</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="newsletterDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Рассылки
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="newsletterDropdown">
+                        <a class="dropdown-item" href="{% url 'app_newsletter:newsletter_list' %}">
+                            {% if request.user.is_staff %}
+                                Список всех рассылок
+                            {% else %}
+                                Список моих рассылок
+                            {% endif %}
+                        </a>
+                        <a class="dropdown-item" href="{% url 'app_newsletter:newsletter_create' %}">
+                            Создать рассылку
+                        </a>
+                        <a class="dropdown-item" href="{% url 'app_newsletter:newsletter_log_list' %}">
+                            Отчёт по проведённым рассылкам
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
+            {% if request.user.is_staff %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="newsletterDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Менеджмент
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="newsletterDropdown">
+                        <a class="dropdown-item" href="{% url 'app_user:user_list' %}">Список пользователей сервиса</a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 top-menu">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="blogDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-regular fa-user"></i>
+                    {% if request.user.is_authenticated %}
+                        {{ request.user }}
+                    {% endif %}
+                </a>
+                {% if request.user.is_authenticated %}
+                    <ul class="dropdown-menu user-dropdown-menu" aria-labelledby="blogDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'app_user:profile' %}">
+                                {{ request.user }}
+                            </a>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'app_user:logout' %}">Выход</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="dropdown-menu user-dropdown-menu" aria-labelledby="blogDropdown">
+                        <li><a class="dropdown-item" href="{% url 'app_user:register' %}">Регистрация</a></li>
+                        <li><a class="dropdown-item" href="{% url 'app_user:login' %}">Авторизация</a></li>
+                    </ul>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>

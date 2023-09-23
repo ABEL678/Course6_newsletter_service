@@ -6,13 +6,6 @@ from .models import Newsletter
 
 
 class NewsletterCreateForm(forms.ModelForm):
-    """
-    Форма для модели Newsletter.
-    Предоставляет поля для ввода времени рассылки, даты и времени её окончания,
-    частоты, клиентов и сообщений.
-    В полях для выбора клиентов и сообщений отображены только те объекты,
-    которые были созданы текущим пользователем.
-    """
 
     class Meta:
         model = Newsletter
@@ -27,11 +20,7 @@ class NewsletterCreateForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        """
-        Инициализация формы.
-        Убирает из kwargs пользователя и использует его
-        для выбора клиентов и сообщений.
-        """
+
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
@@ -40,11 +29,7 @@ class NewsletterCreateForm(forms.ModelForm):
             self.fields['messages'].queryset = user.get_messages()
 
     def clean_finish_date(self):
-        """
-        Проверяет дату завершения периодической рассылки.
-        Валидация проходит только в случае, если дата завершения позже текущей даты.
-        Если валидация прошла успешно, возвращает дату завершения.
-        """
+
         finish_date = self.cleaned_data.get('finish_date')
 
         if finish_date and finish_date <= datetime.now().date():
