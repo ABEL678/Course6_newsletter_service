@@ -92,9 +92,6 @@ class NewsletterUpdateView(CreatorAccessMixin, ActiveNewsletterMixin, UpdateView
         return redirect(reverse('app_newsletter:newsletter_detail', kwargs={'pk': newsletter.pk}))
 
     def get_context_data(self, **kwargs) -> Dict[str, str]:
-        """
-        Возвращает контекстные данные для шаблона.
-        """
         context = super().get_context_data(**kwargs)
         context['action'] = 'Редактировать'
         return context

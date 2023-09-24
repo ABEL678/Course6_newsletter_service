@@ -8,12 +8,6 @@ from .models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    """
-    Класс, описывающий модель CustomUser в административном интерфейсе.
-    Определяет форму, которая должна использоваться в
-    административном интерфейсе, какие поля должны отображаться
-    и какие из них должны быть доступны только для чтения при редактировании существующих записей.
-    """
     model = CustomUser
     list_display = ['email', 'first_name', 'last_name', 'email_verified', 'is_active', 'is_staff']
     ordering = ('email',)
@@ -22,22 +16,11 @@ class CustomUserAdmin(UserAdmin):
     form = UserUpdateForm
 
     def get_readonly_fields(self, request: HttpRequest, obj: CustomUser = None) -> tuple:
-        """
-        Возвращает кортеж полей, которые должны быть доступны только для чтения.
-        :param request: Объект HttpRequest текущего запроса.
-        :param obj: Объект модели, который в данный момент редактируется.
-        """
         if obj:
             return self.readonly_fields + ('email',)
         return self.readonly_fields
 
     def get_fieldsets(self, request: HttpRequest, obj: CustomUser = None) -> tuple:
-        """
-        Возвращает кортеж кортежей, определяющих расположение полей на форме.
-        :param request: Объект HttpRequest текущего запроса.
-        :param obj: Объект модели, который в данный момент редактируется.
-        """
-
         if not obj:
             fieldsets = (
                 (None, {'fields': ('email', 'password1', 'password2')}),

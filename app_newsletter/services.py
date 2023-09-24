@@ -8,7 +8,7 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
-#from django_celery_beat.models import PeriodicTask, CrontabSchedule
+from django_celery_beat.models import PeriodicTask, CrontabSchedule
 
 from .models import NewsletterLog, Message, Client, Newsletter
 
@@ -64,71 +64,65 @@ class NewsletterDeliveryService:
         )
         newsletter_log.save()
 
-    # def create_schedule(self) -> CrontabSchedule:
-    #     """
-    #     Создаёт и возвращает расписание (CrontabSchedule) для задачи рассылки.
-    #     В зависимости от заданной частоты рассылки (D - раз в день, W - раз в неделю,
-    #     M - раз в месяц) и времени отправки рассылки (time) назначаются параметры
-    #     расписания.
-    #     """
-    #     schedule_args = {
-    #         'minute': self.newsletter.time.minute,
-    #         'hour': self.newsletter.time.hour,
-    #     }
-    #
-    #     if self.newsletter.frequency == 'D':
-    #         schedule_args.update(
-    #             {
-    #                 'day_of_week': '*',
-    #                 'day_of_month': '*'
-    #             }
-    #         )
-    #
-    #     elif self.newsletter.frequency == 'W':
-    #         schedule_args.update(
-    #             {
-    #                 'day_of_week': self.newsletter.created_at.weekday(),
-    #                 'day_of_month': '*'
-    #             }
-    #         )
-    #
-    #     elif self.newsletter.frequency == 'M':
-    #         day_of_month = self.newsletter.created_at.day if self.newsletter.created_at.day <= 28 else 28
-    #         schedule_args.update(
-    #             {
-    #                 'day_of_week': '*',
-    #                 'day_of_month': day_of_month
-    #             }
-    #         )
-    #
-    #     schedule, _ = CrontabSchedule.objects.get_or_create(**schedule_args, month_of_year='*')
-    #
-    #     return schedule
-    #
-    # def create_task(self):
-    #     """
-    #     Создаёт периодическую задачу для рассылки.
-    #     """
-    #     schedule = self.create_schedule()
-    #     PeriodicTask.objects.create(
-    #         crontab=schedule,
-    #         name=str(self.newsletter),
-    #         task='app_newsletter.tasks.send_newsletter',
-    #         args=[self.newsletter.pk]
-    #     )
-    #
-    # def delete_task(self):
-    #     """
-    #     Удаляет периодическую задачу для рассылки.
-    #     """
-    #     try:
-    #         task = PeriodicTask.objects.get(name=str(self.newsletter))
-    #         task.delete()
-    #         self.newsletter.status = 'F'
-    #         self.newsletter.save()
-    #         logger.info('Задача удалена')
-    #     except PeriodicTask.DoesNotExist:
-    #         logger.exception(f'Периодической задачи для {self.newsletter} не существует.')
+    def create_schedule(self) -> CrontabSchedule:
+        schedule_args = {
+            'minute': self.newsletter.time.minute,
+            'hour': self.newsletter.time.hour,
+        }
+
+        if self.newsletter.frequency == 'D':
+            schedule_args.update(
+                {
+                    'day_of_week': '*',
+                    'day_of_month': '*'
+                }
+            )
+
+        elif self.newsletter.frequency == 'W':
+            schedule_args.update(
+                {
+                    'day_of_week': self.newsletter.created_at.weekday(),
+                    'day_of_month': '*'
+                }
+            )
+
+        elif self.newsletter.frequency == 'M':
+            day_of_month = self.newsletter.created_at.day if self.newsletter.created_at.day <= 28 else 28
+            schedule_args.update(
+                {
+                    'day_of_week': '*',
+                    'day_of_month': day_of_month
+                }
+            )
+
+        schedule, _ = CrontabSchedule.objects.get_or_create(**schedule_args, month_of_year='*')
+
+        return schedule
+
+    def create_task(self):
+        """
+        Создаёт периодическую задачу для рассылки.
+        """
+        schedule = self.create_schedule()
+        PeriodicTask.objects.create(
+            crontab=schedule,
+            name=str(self.newsletter),
+            task='app_newsletter.tasks.send_newsletter',
+            args=[self.newsletter.pk]
+        )
+
+    def delete_task(self):
+        """
+        Удаляет периодическую задачу для рассылки.
+        """
+        try:
+            task = PeriodicTask.objects.get(name=str(self.newsletter))
+            task.delete()
+            self.newsletter.status = 'F'
+            self.newsletter.save()
+            logger.info('Задача удалена')
+        except PeriodicTask.DoesNotExist:
+            logger.exception(f'Периодической задачи для {self.newsletter} не существует.')
 
     def check_task_finish_datetime(self) -> bool:
         end_datetime_str = f'{self.newsletter.finish_date} {self.newsletter.finish_time}'

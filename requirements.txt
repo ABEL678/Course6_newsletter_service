@@ -20,4 +20,4 @@ six~=1.16.0
 asttokens~=2.2.1
 executing~=1.2.0
 celery~=5.3.4
-python-slugify~=8.0.1
+pytils~=0.4.1

@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
-#from slugify import slugify
+from pytils.translit import slugify
 
 from permissions.authenticate import AuthenticatedAccessMixin
 from permissions.user_permission import CreatorAccessMixin
@@ -22,7 +22,7 @@ class PostCreateView(AuthenticatedAccessMixin, CreateView):
 
     def form_valid(self, form: PostCreateForm) -> HttpResponseRedirect:
         post = form.save(commit=False)
-        #post.slug = slugify(post.title)
+        post.slug = slugify(post.title)
         post.created_by = self.request.user
         post.save()
         messages.success(request=self.request, message='Статья успешно создана')
@@ -59,7 +59,7 @@ class PostUpdateView(CreatorAccessMixin, UpdateView):
 
     def form_valid(self, form: PostCreateForm) -> HttpResponseRedirect:
         post = form.save()
-        #post.slug = slugify(post.title)
+        post.slug = slugify(post.title)
         post.save()
         messages.success(request=self.request, message='Статья успешно отредактирована')
         return redirect(reverse('app_blog:post_detail', kwargs={'slug': post.slug}))
